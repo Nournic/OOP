@@ -65,4 +65,48 @@ public class TabulatedFunction {
         }
         return answer;
     }
+
+    public int getPointsCount() {
+        return pointsCount;
+    }
+
+    public FunctionPoint getPoint(int index) {
+        return functionPoints[index];
+    }
+
+    public void setPoint(int index, FunctionPoint point) {
+        // Точка за левой границей
+        if (point.getX() < getLeftDomainBorder())
+            return;
+
+        // Точка за правой границей
+        if (point.getX() > getRightDomainBorder())
+            return;
+
+        functionPoints[index] = point;
+    }
+
+    public double getPointX(int index) {
+        return functionPoints[index].getX();
+    }
+
+    public void setPointX(int index, double x) {
+        // Точка за левой границей
+        if (x < getLeftDomainBorder())
+            return;
+
+        // Точка за правой границей
+        if (x > getRightDomainBorder())
+            return;
+
+        functionPoints[index].setX(x);
+    }
+
+    public double getPointY(int index) {
+        return functionPoints[index].getY();
+    }
+
+    public void setPointY(int index, double y) {
+        functionPoints[index].setY(y);
+    }
 }
