@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 
 class TabulatedFunctionTest {
@@ -128,5 +129,59 @@ class TabulatedFunctionTest {
         Assertions.assertEquals(expect1, tabulatedFunctionArray.getPointY(0));
         Assertions.assertEquals(expect2, tabulatedFunctionArray.getPointY(
                 tabulatedFunctionPointsCount.getPointsCount() - 1));
+    }
+
+    @Test
+    void deletePoint() {
+        double expect = tabulatedFunctionArray.getPoint(1).getX();
+        double expect_points = tabulatedFunctionArray.getPointsCount() - 1;
+
+        tabulatedFunctionArray.deletePoint(0);
+
+        Assertions.assertEquals(expect, tabulatedFunctionArray.getPoint(0).getX());
+        Assertions.assertEquals(expect_points, tabulatedFunctionArray.getPointsCount());
+    }
+
+    @Test
+    void addPoint1() {
+        FunctionPoint functionPoint = new FunctionPoint(-5.5,0);
+        int expect_points = tabulatedFunctionArray.getPointsCount() + 1;
+
+        tabulatedFunctionArray.addPoint(functionPoint);
+        Assertions.assertSame(functionPoint, tabulatedFunctionArray.getPoint(0));
+        Assertions.assertEquals(expect_points, tabulatedFunctionArray.getPointsCount());
+    }
+
+    @Test
+    void addPoint2() {
+        FunctionPoint functionPoint = new FunctionPoint(5.5,0);
+        int expect_points = tabulatedFunctionArray.getPointsCount() + 1;
+
+        tabulatedFunctionArray.addPoint(functionPoint);
+        Assertions.assertSame(functionPoint, tabulatedFunctionArray.getPoint(
+                tabulatedFunctionArray.getPointsCount() - 1));
+        Assertions.assertEquals(expect_points, tabulatedFunctionArray.getPointsCount());
+    }
+
+    @Test
+    void addPoint3() {
+        FunctionPoint functionPoint = new FunctionPoint(-4.5,0);
+        int expect_points = tabulatedFunctionArray.getPointsCount() + 1;
+
+        tabulatedFunctionArray.addPoint(functionPoint);
+        Assertions.assertSame(functionPoint, tabulatedFunctionArray.getPoint(1));
+        Assertions.assertEquals(expect_points, tabulatedFunctionArray.getPointsCount());
+    }
+
+    @Test
+    void addPoint4() {
+        FunctionPoint functionPoint = new FunctionPoint(4.5,0);
+        int expect_points = tabulatedFunctionArray.getPointsCount() + 1;
+
+        tabulatedFunctionArray.addPoint(functionPoint);
+        Assertions.assertSame(functionPoint, tabulatedFunctionArray.getPoint(
+                tabulatedFunctionArray.getPointsCount() - 2
+        ));
+        Assertions.assertEquals(expect_points, tabulatedFunctionArray.getPointsCount());
     }
 }

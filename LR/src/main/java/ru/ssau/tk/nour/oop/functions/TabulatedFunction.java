@@ -2,10 +2,25 @@ package ru.ssau.tk.nour.oop.functions;
 
 public class TabulatedFunction {
     private FunctionPoint functionPoints[];
+    private final int capacity = 10;
     private int pointsCount;
 
+    private void resizeArrayIncrease() {
+        FunctionPoint functionPointNew[] = new FunctionPoint[functionPoints.length + capacity];
+        System.arraycopy(functionPoints, 0, functionPointNew, 0, functionPoints.length);
+
+        functionPoints = functionPointNew;
+    }
+
+    private void resizeArrayDecrease() {
+        FunctionPoint functionPointNew[] = new FunctionPoint[functionPoints.length - capacity];
+        System.arraycopy(functionPoints, 0, functionPointNew, 0, functionPoints.length);
+
+        functionPoints = functionPointNew;
+    }
+
     public TabulatedFunction(double leftX, double rightX, int pointsCount) {
-        functionPoints = new FunctionPoint[pointsCount];
+        functionPoints = new FunctionPoint[pointsCount + capacity];
         for (int i = 0; i < functionPoints.length; i++)
             functionPoints[i] = new FunctionPoint();
 
@@ -21,7 +36,7 @@ public class TabulatedFunction {
     }
 
     public TabulatedFunction(double leftX, double rightX, double[] values) {
-        functionPoints = new FunctionPoint[values.length];
+        functionPoints = new FunctionPoint[values.length + capacity];
         for (int i = 0; i < functionPoints.length; i++)
             functionPoints[i] = new FunctionPoint();
 
@@ -50,17 +65,17 @@ public class TabulatedFunction {
     public double getFunctionValue(double x) {
         double answer = Double.NaN;
 
-        if(x>=getLeftDomainBorder() && x<=getRightDomainBorder()) {
+        if (x >= getLeftDomainBorder() && x <= getRightDomainBorder()) {
             FunctionPoint next_point = functionPoints[1];
             FunctionPoint prev_point = functionPoints[0];
-            for (int i = 0; i < pointsCount; i++){
+            for (int i = 0; i < pointsCount; i++) {
                 if (functionPoints[i].getX() >= x && x != getLeftDomainBorder()) {
                     next_point = functionPoints[i];
-                    prev_point = functionPoints[i-1];
+                    prev_point = functionPoints[i - 1];
                     break;
                 }
             }
-            answer = ((x - prev_point.getX())/(next_point.getX() - prev_point.getX())
+            answer = ((x - prev_point.getX()) / (next_point.getX() - prev_point.getX())
                     * (next_point.getY() - prev_point.getY()) + prev_point.getY());
         }
         return answer;
@@ -108,5 +123,38 @@ public class TabulatedFunction {
 
     public void setPointY(int index, double y) {
         functionPoints[index].setY(y);
+    }
+
+    public void deletePoint(int index) {
+        if (pointsCount < 3)
+            return;
+
+        if (pointsCount < functionPoints.length - capacity)
+            resizeArrayDecrease();
+
+        System.arraycopy(functionPoints, index + 1, functionPoints, index, pointsCount - index);
+        pointsCount--;
+    }
+
+    public void addPoint(FunctionPoint point) {
+        if (pointsCount + 1 > functionPoints.length)
+            resizeArrayIncrease();
+
+        int index_insert = getPointsCount();
+
+        for (int i = 0; i < pointsCount; i++) {
+            if (functionPoints[i].getX() >= point.getX()) {
+                if (functionPoints[i].getX() == point.getX())
+                    return;
+
+                index_insert = i;
+                break;
+            }
+        }
+
+
+        System.arraycopy(functionPoints, index_insert, functionPoints, index_insert + 1, pointsCount - index_insert);
+        functionPoints[index_insert] = point;
+        pointsCount++;
     }
 }
