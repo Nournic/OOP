@@ -86,29 +86,18 @@ class TabulatedFunctionTest {
     }
 
     @Test
-    void setPointOutOfBorder() {
-        int expect = -5;
-
-        FunctionPoint functionPoint = Mockito.mock(FunctionPoint.class);
-        Mockito.when(functionPoint.getX()).thenReturn(-5.5);
-        tabulatedFunctionArray.setPoint(0, functionPoint);
-
-        Assertions.assertEquals(expect, tabulatedFunctionArray.getPointX(0));
-
-        Mockito.when(functionPoint.getX()).thenReturn(5.5);
-        tabulatedFunctionArray.setPoint(0, functionPoint);
-        Assertions.assertEquals(expect, tabulatedFunctionArray.getPointX(0));
-    }
-
-    @Test
     void setPointInBorder() {
         double expect = -4;
 
-        FunctionPoint functionPoint = Mockito.mock(FunctionPoint.class);
-        Mockito.when(functionPoint.getX()).thenReturn(expect);
-        tabulatedFunctionArray.setPoint(0, functionPoint);
+        try {
+            FunctionPoint functionPoint = Mockito.mock(FunctionPoint.class);
+            Mockito.when(functionPoint.getX()).thenReturn(expect);
+            tabulatedFunctionArray.setPoint(0, functionPoint);
 
-        Assertions.assertEquals(expect, tabulatedFunctionArray.getPointX(0));
+            Assertions.assertEquals(expect, tabulatedFunctionArray.getPointX(0));
+        } catch (InappropriateFunctionPointException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
@@ -147,9 +136,13 @@ class TabulatedFunctionTest {
         FunctionPoint functionPoint = new FunctionPoint(-5.5,0);
         int expect_points = tabulatedFunctionArray.getPointsCount() + 1;
 
-        tabulatedFunctionArray.addPoint(functionPoint);
-        Assertions.assertSame(functionPoint, tabulatedFunctionArray.getPoint(0));
-        Assertions.assertEquals(expect_points, tabulatedFunctionArray.getPointsCount());
+        try {
+            tabulatedFunctionArray.addPoint(functionPoint);
+            Assertions.assertSame(functionPoint, tabulatedFunctionArray.getPoint(0));
+            Assertions.assertEquals(expect_points, tabulatedFunctionArray.getPointsCount());
+        } catch (InappropriateFunctionPointException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
@@ -157,10 +150,14 @@ class TabulatedFunctionTest {
         FunctionPoint functionPoint = new FunctionPoint(5.5,0);
         int expect_points = tabulatedFunctionArray.getPointsCount() + 1;
 
-        tabulatedFunctionArray.addPoint(functionPoint);
-        Assertions.assertSame(functionPoint, tabulatedFunctionArray.getPoint(
-                tabulatedFunctionArray.getPointsCount() - 1));
-        Assertions.assertEquals(expect_points, tabulatedFunctionArray.getPointsCount());
+        try {
+            tabulatedFunctionArray.addPoint(functionPoint);
+            Assertions.assertSame(functionPoint, tabulatedFunctionArray.getPoint(
+                    tabulatedFunctionArray.getPointsCount() - 1));
+            Assertions.assertEquals(expect_points, tabulatedFunctionArray.getPointsCount());
+        } catch (InappropriateFunctionPointException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
@@ -168,9 +165,13 @@ class TabulatedFunctionTest {
         FunctionPoint functionPoint = new FunctionPoint(-4.5,0);
         int expect_points = tabulatedFunctionArray.getPointsCount() + 1;
 
-        tabulatedFunctionArray.addPoint(functionPoint);
-        Assertions.assertSame(functionPoint, tabulatedFunctionArray.getPoint(1));
-        Assertions.assertEquals(expect_points, tabulatedFunctionArray.getPointsCount());
+        try {
+            tabulatedFunctionArray.addPoint(functionPoint);
+            Assertions.assertSame(functionPoint, tabulatedFunctionArray.getPoint(1));
+            Assertions.assertEquals(expect_points, tabulatedFunctionArray.getPointsCount());
+        } catch (InappropriateFunctionPointException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
@@ -178,10 +179,82 @@ class TabulatedFunctionTest {
         FunctionPoint functionPoint = new FunctionPoint(4.5,0);
         int expect_points = tabulatedFunctionArray.getPointsCount() + 1;
 
-        tabulatedFunctionArray.addPoint(functionPoint);
-        Assertions.assertSame(functionPoint, tabulatedFunctionArray.getPoint(
-                tabulatedFunctionArray.getPointsCount() - 2
-        ));
-        Assertions.assertEquals(expect_points, tabulatedFunctionArray.getPointsCount());
+        try {
+            tabulatedFunctionArray.addPoint(functionPoint);
+            Assertions.assertSame(functionPoint, tabulatedFunctionArray.getPoint(
+                    tabulatedFunctionArray.getPointsCount() - 2
+            ));
+            Assertions.assertEquals(expect_points, tabulatedFunctionArray.getPointsCount());
+        } catch (InappropriateFunctionPointException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    void createFunctionWithLesserThan2Points() {
+        Assertions.assertThrowsExactly(IllegalArgumentException.class,
+                () -> new TabulatedFunction(-5, 5, 1));
+        Assertions.assertThrowsExactly(IllegalArgumentException.class,
+                () -> new TabulatedFunction(-5, 5, -1));
+    }
+
+    @Test
+    void createFunctionWithEqualsX() {
+        Assertions.assertThrowsExactly(IllegalArgumentException.class,
+                () -> new TabulatedFunction(0, 0, 10));
+    }
+
+    @Test
+    void createFunctionWithRightXGreaterThanLeftX() {
+        Assertions.assertThrowsExactly(IllegalArgumentException.class,
+                () -> new TabulatedFunction(5, -5, 10));
+    }
+    @Test
+    void setPointExceptions() {
+        FunctionPoint functionPoint = new FunctionPoint(-5.01, 0);
+
+        Assertions.assertThrowsExactly(InappropriateFunctionPointException.class,
+                () -> tabulatedFunctionArray.setPoint(0, functionPoint));
+
+        functionPoint.setX(5.01);
+
+        Assertions.assertThrowsExactly(InappropriateFunctionPointException.class,
+                () -> tabulatedFunctionArray.setPoint(0, functionPoint));
+    }
+    @Test
+    void setPoint() {
+        FunctionPoint functionPoint = new FunctionPoint(1, 5);
+        try {
+            Assertions.assertNotEquals(functionPoint, tabulatedFunctionArray.getPoint(5));
+            tabulatedFunctionArray.setPoint(5, functionPoint);
+            Assertions.assertEquals(functionPoint, tabulatedFunctionArray.getPoint(5));
+        } catch (InappropriateFunctionPointException e) {
+            Assertions.assertEquals(-1, 1);
+        }
+    }
+    @Test
+    void deletePointTwoPoints() {
+        TabulatedFunction tabulatedFunctionArray = new TabulatedFunction(-5, 5, 2);
+        Assertions.assertThrowsExactly(IllegalStateException.class,
+                () -> tabulatedFunctionArray.deletePoint(0));
+    }
+    @Test
+    void deletePointExceptionLeftBorder() {
+        Assertions.assertThrowsExactly(FunctionPointIndexOutOfBoundsException.class,
+                () -> tabulatedFunctionArray.deletePoint(-1));
+    }
+
+    @Test
+    void deletePointExceptionRightBorder() {
+        Assertions.assertThrowsExactly(FunctionPointIndexOutOfBoundsException.class,
+                () -> tabulatedFunctionArray.deletePoint(9));
+    }
+    @Test
+    void addPointExceptions() {
+        FunctionPoint functionPoint = Mockito.mock(FunctionPoint.class);
+        Mockito.when(functionPoint.getX()).thenReturn(-5.0);
+
+        Assertions.assertThrowsExactly(InappropriateFunctionPointException.class,
+                () -> tabulatedFunctionArray.addPoint(functionPoint));
     }
 }
