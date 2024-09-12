@@ -8,10 +8,9 @@ class FunctionPointTest {
     FunctionPoint functionPoint;
 
     @BeforeEach
-    void functionPointConstructorTest(){
+    void init(){
         functionPoint = new FunctionPoint(5,4);
     }
-
 
     @Test
     void getX() {
