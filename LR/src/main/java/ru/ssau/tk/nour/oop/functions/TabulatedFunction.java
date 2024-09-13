@@ -1,12 +1,6 @@
 package ru.ssau.tk.nour.oop.functions;
 
-public interface TabulatedFunction {
-    double getLeftDomainBorder();
-
-    double getRightDomainBorder() throws FunctionPointIndexOutOfBoundsException;
-
-    double getFunctionValue(double x) throws InappropriateFunctionPointException;
-
+public interface TabulatedFunction extends Function{
     int getPointsCount();
 
     FunctionPoint getPoint(int index) throws FunctionPointIndexOutOfBoundsException;
