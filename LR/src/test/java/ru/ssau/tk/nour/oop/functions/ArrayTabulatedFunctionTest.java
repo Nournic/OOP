@@ -231,6 +231,29 @@ class ArrayTabulatedFunctionTest {
         }
     }
     @Test
+    void setPointXExceptions() {
+        FunctionPoint functionPoint = new FunctionPoint(-5.01, 0);
+
+        Assertions.assertThrowsExactly(InappropriateFunctionPointException.class,
+                () -> arrayTabulatedFunctionArray.setPointX(0, functionPoint.getX()));
+
+        functionPoint.setX(5.01);
+
+        Assertions.assertThrowsExactly(InappropriateFunctionPointException.class,
+                () -> arrayTabulatedFunctionArray.setPointX(0, functionPoint.getX()));
+    }
+    @Test
+    void setPointX() {
+        double expect = 1;
+        try {
+            Assertions.assertNotEquals(expect, arrayTabulatedFunctionArray.getPointX(5));
+            arrayTabulatedFunctionArray.setPointX(5, 1);
+            Assertions.assertEquals(expect, arrayTabulatedFunctionArray.getPointX(5));
+        } catch (InappropriateFunctionPointException e) {
+            Assertions.assertEquals(-1, 1);
+        }
+    }
+    @Test
     void deletePointTwoPoints() {
         ArrayTabulatedFunction arrayTabulatedFunctionArray = new ArrayTabulatedFunction(-5, 5, 2);
         Assertions.assertThrowsExactly(IllegalStateException.class,

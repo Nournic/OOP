@@ -257,4 +257,27 @@ class LinkedListTabulatedFunctionTest {
         Assertions.assertThrowsExactly(InappropriateFunctionPointException.class,
                 () -> linkedListTabulatedFunction.addPoint(functionPoint));
     }
+    @Test
+    void setPointXExceptions() {
+        FunctionPoint functionPoint = new FunctionPoint(-5.01, 0);
+
+        Assertions.assertThrowsExactly(InappropriateFunctionPointException.class,
+                () -> linkedListTabulatedFunction.setPointX(0, functionPoint.getX()));
+
+        functionPoint.setX(5.01);
+
+        Assertions.assertThrowsExactly(InappropriateFunctionPointException.class,
+                () -> linkedListTabulatedFunction.setPointX(0, functionPoint.getX()));
+    }
+    @Test
+    void setPointX() {
+        double expect = 1;
+        try {
+            Assertions.assertNotEquals(expect, linkedListTabulatedFunction.getPointX(5));
+            linkedListTabulatedFunction.setPointX(5, 1);
+            Assertions.assertEquals(expect, linkedListTabulatedFunction.getPointX(5));
+        } catch (InappropriateFunctionPointException e) {
+            Assertions.assertEquals(-1, 1);
+        }
+    }
 }
