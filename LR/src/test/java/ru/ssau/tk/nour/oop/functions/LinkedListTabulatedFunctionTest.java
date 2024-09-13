@@ -193,21 +193,21 @@ class LinkedListTabulatedFunctionTest {
     @Test
     void createFunctionWithLesserThan2Points() {
         Assertions.assertThrowsExactly(IllegalArgumentException.class,
-                () -> new TabulatedFunction(-5, 5, 1));
+                () -> new ArrayTabulatedFunction(-5, 5, 1));
         Assertions.assertThrowsExactly(IllegalArgumentException.class,
-                () -> new TabulatedFunction(-5, 5, -1));
+                () -> new ArrayTabulatedFunction(-5, 5, -1));
     }
 
     @Test
     void createFunctionWithEqualsX() {
         Assertions.assertThrowsExactly(IllegalArgumentException.class,
-                () -> new TabulatedFunction(0, 0, 10));
+                () -> new ArrayTabulatedFunction(0, 0, 10));
     }
 
     @Test
     void createFunctionWithRightXGreaterThanLeftX() {
         Assertions.assertThrowsExactly(IllegalArgumentException.class,
-                () -> new TabulatedFunction(5, -5, 10));
+                () -> new ArrayTabulatedFunction(5, -5, 10));
     }
     @Test
     void setPointExceptions() {
@@ -234,7 +234,7 @@ class LinkedListTabulatedFunctionTest {
     }
     @Test
     void deletePointTwoPoints() {
-        TabulatedFunction linkedListTabulatedFunction = new TabulatedFunction(-5, 5, 2);
+        ArrayTabulatedFunction linkedListTabulatedFunction = new ArrayTabulatedFunction(-5, 5, 2);
         Assertions.assertThrowsExactly(IllegalStateException.class,
                 () -> linkedListTabulatedFunction.deletePoint(0));
     }

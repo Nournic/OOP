@@ -1,6 +1,6 @@
 package ru.ssau.tk.nour.oop.functions;
 
-public class LinkedListTabulatedFunction {
+public class LinkedListTabulatedFunction implements TabulatedFunction{
     private FunctionNode head;
     private FunctionNode last_search;
     private int last_search_index;
