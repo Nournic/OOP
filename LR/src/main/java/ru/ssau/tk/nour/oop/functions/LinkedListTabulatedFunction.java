@@ -107,6 +107,22 @@ public class LinkedListTabulatedFunction implements TabulatedFunction{
         }
     }
 
+    public LinkedListTabulatedFunction(FunctionPoint[] points) throws IllegalArgumentException {
+        if(points.length<2)
+            throw new IllegalArgumentException();
+
+        FunctionPoint prev = points[0];
+        for(int i = 1; i < points.length; i++){
+            if(prev.getX()>points[i].getX())
+                throw new IllegalArgumentException();
+            prev = points[i];
+        }
+
+        for(FunctionPoint point: points){
+            addNodeToTail().setData(point);
+        }
+    }
+
     public double getLeftDomainBorder() {
         return head.getNext().getData().getX();
     }

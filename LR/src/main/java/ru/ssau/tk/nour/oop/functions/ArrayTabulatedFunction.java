@@ -63,6 +63,21 @@ public class ArrayTabulatedFunction implements TabulatedFunction {
         }
     }
 
+    public ArrayTabulatedFunction(FunctionPoint[] points) throws IllegalArgumentException {
+        if(points.length<2)
+            throw new IllegalArgumentException();
+
+        FunctionPoint prev = points[0];
+        for(int i = 1; i < points.length; i++){
+            if(prev.getX() > points[i].getX())
+                throw new IllegalArgumentException();
+            prev = points[i];
+        }
+
+        functionPoints = new FunctionPoint[pointsCount+capacity];
+        System.arraycopy(points, 0, functionPoints,0, points.length);
+    }
+
     public double getLeftDomainBorder() {
         int left_index = 0;
         return functionPoints[left_index].getX();
