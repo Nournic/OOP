@@ -15,16 +15,24 @@ public class LinkedListTabulatedFunction {
         FunctionNode current_node = head.getNext();
         int cur_index = 0;
 
-        if (last_search_index - index < index) {
+        if (Math.abs(last_search_index - index) < index) {
             current_node = last_search;
             cur_index = last_search_index;
         }
 
-        while (cur_index++ != index)
-            current_node = current_node.getNext();
+        while (cur_index != index){
+            if(index<cur_index) {
+                current_node = current_node.getPrev();
+                cur_index--;
+            }
+            else{
+                current_node = current_node.getNext();
+                cur_index++;
+            }
+        }
 
         last_search = current_node;
-        last_search_index = cur_index;
+        last_search_index = index;
 
         return current_node;
     }
@@ -39,7 +47,10 @@ public class LinkedListTabulatedFunction {
 
     private FunctionNode addNodeByIndex(int index) {
         FunctionNode current_node = getNodeByIndex(index);
-        FunctionNode new_node = new FunctionNode(current_node.getPrev(), current_node.getNext());
+        last_search_index = 0;
+        last_search = head.getNext();
+
+        FunctionNode new_node = new FunctionNode(current_node.getPrev(), current_node);
 
         new_node.getPrev().setNext(new_node);
         new_node.getNext().setPrev(new_node);
@@ -51,6 +62,9 @@ public class LinkedListTabulatedFunction {
         FunctionNode current_node = getNodeByIndex(index);
         current_node.getPrev().setNext(current_node.getNext());
         current_node.getNext().setPrev(current_node.getPrev());
+
+        last_search_index = 0;
+        last_search = head.getNext();
 
         return current_node;
     }
@@ -126,7 +140,7 @@ public class LinkedListTabulatedFunction {
 
     public FunctionPoint getPoint(int index) throws FunctionPointIndexOutOfBoundsException {
         checkIndex(index);
-        return getNodeByIndex(index).getData();
+        return this.getNodeByIndex(index).getData();
     }
 
     public void setPoint(int index, FunctionPoint point) throws FunctionPointIndexOutOfBoundsException, InappropriateFunctionPointException {
@@ -174,7 +188,7 @@ public class LinkedListTabulatedFunction {
     }
 
     public void addPoint(FunctionPoint point) throws InappropriateFunctionPointException {
-        int index_insert = 0;
+        int index_insert = getPointsCount();
         for (int i = 0; i < pointsCount; i++) {
             if (getNodeByIndex(i).getData().getX() >= point.getX()) {
                 if (getNodeByIndex(i).getData().getX() == point.getX())
