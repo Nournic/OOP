@@ -67,6 +67,7 @@ public class ArrayTabulatedFunction implements TabulatedFunction {
         if(points.length<2)
             throw new IllegalArgumentException();
 
+        this.pointsCount = points.length;
         FunctionPoint prev = points[0];
         for(int i = 1; i < points.length; i++){
             if(prev.getX() > points[i].getX())

@@ -15,8 +15,7 @@ public abstract class TabulatedFunctions {
 
         int i; double current_step;
         for(i = 0, current_step=leftX; i < pointsCount; i++) {
-            functionPoints[i].setX(current_step);
-            functionPoints[i].setY(function.getFunctionValue(current_step));
+            functionPoints[i] = new FunctionPoint(current_step, function.getFunctionValue(current_step));
             current_step+=step;
         }
 
@@ -62,32 +61,42 @@ public abstract class TabulatedFunctions {
         int length = function.getPointsCount();
 
         for(int i = 0; i < length; i++){
-            out.write(((Double)function.getPointX(i)).toString());
-            out.write(((Double)function.getPointY(i)).toString());
+            String x = ((Double)function.getPointX(i)).toString();
+            String y = ((Double)function.getPointY(i)).toString();
+            out.write(x + " ");
+            out.write(y + " ");
         }
+        out.flush();
     }
 
     public static TabulatedFunction readTabulatedFunction(Reader in) throws IOException{
         List<Double> num_list = new ArrayList<>();
         StreamTokenizer streamTokenizer = new StreamTokenizer(in);
 
+        streamTokenizer.parseNumbers();
         int token = streamTokenizer.nextToken();
         while (token != StreamTokenizer.TT_EOF) {
-            token = streamTokenizer.nextToken();
             switch (token) {
                 case StreamTokenizer.TT_NUMBER:
                     double num = streamTokenizer.nval;
+                    num_list.add(num);
+                    token = streamTokenizer.nextToken();
+                    if(token != streamTokenizer.TT_NUMBER)
+                        throw new IOException();
+                    num = streamTokenizer.nval;
                     num_list.add(num);
                     break;
                 case StreamTokenizer.TT_EOF:
                     break;
             }
+            token = streamTokenizer.nextToken();
         }
 
         //Перевод списка в массив
-        FunctionPoint[] functionPoints = new FunctionPoint[num_list.size()];
-        for (int i = 0; i < functionPoints.length; i+=2)
-            functionPoints[i] = new FunctionPoint(num_list.get(i),num_list.get(i+1));
+        FunctionPoint[] functionPoints = new FunctionPoint[num_list.size()/2];
+        int j = 0;
+        for (int i = 0; i < functionPoints.length; i++)
+            functionPoints[i] = new FunctionPoint(num_list.get(j++),num_list.get(j++));
 
         return new ArrayTabulatedFunction(functionPoints);
     }

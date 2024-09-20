@@ -3,6 +3,8 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 ./src/main/resources/
+./src/test/java/ru/ssau/tk/nour/oop/functions/task_8/*.txt
+
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
