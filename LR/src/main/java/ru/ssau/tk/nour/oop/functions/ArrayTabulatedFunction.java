@@ -1,5 +1,9 @@
 package ru.ssau.tk.nour.oop.functions;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 public class ArrayTabulatedFunction implements TabulatedFunction {
     private FunctionPoint[] functionPoints;
     private final int capacity = 10;
@@ -195,11 +199,27 @@ public class ArrayTabulatedFunction implements TabulatedFunction {
 
     @Override
     public int hashCode() {
-        int hash=0;
-        for (int i = 0; i < pointsCount; i++)
-            hash+=Double.hashCode(functionPoints[i].getX()) + Double.hashCode(functionPoints[i].getY());
+        String input = this.toString();
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
 
-        return hash;
+            byte[] messageDigest = md.digest(input.getBytes());
+
+            BigInteger no = new BigInteger(1, messageDigest);
+
+            String hashtext = no.toString(16);
+
+            while (hashtext.length() < 40) {
+                hashtext = "0" + hashtext;
+            }
+
+            return Integer.parseInt(hashtext);
+        }
+
+        // For specifying wrong message digest algorithms
+        catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -231,9 +251,9 @@ public class ArrayTabulatedFunction implements TabulatedFunction {
     }
 
     @Override
-    protected Object clone() throws CloneNotSupportedException {
-        ArrayTabulatedFunction arrayTabulatedFunction = new ArrayTabulatedFunction(functionPoints.clone());
-        return arrayTabulatedFunction;
+    public Object clone() throws CloneNotSupportedException {
+        Object o = super.clone();
+        return new ArrayTabulatedFunction(functionPoints.clone());
     }
 
     @Override

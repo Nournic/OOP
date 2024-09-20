@@ -2,7 +2,7 @@ package ru.ssau.tk.nour.oop.functions;
 
 import java.io.Serializable;
 
-public interface TabulatedFunction extends Function, Serializable {
+public interface TabulatedFunction extends Function, Serializable, Cloneable {
     int getPointsCount();
 
     FunctionPoint getPoint(int index) throws FunctionPointIndexOutOfBoundsException;
@@ -21,4 +21,5 @@ public interface TabulatedFunction extends Function, Serializable {
 
     void addPoint(FunctionPoint point) throws InappropriateFunctionPointException;
 
+    Object clone() throws CloneNotSupportedException;
 }

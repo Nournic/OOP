@@ -262,9 +262,8 @@ public class LinkedListTabulatedFunction implements TabulatedFunction{
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof TabulatedFunction)) return false;
+        if (!(obj instanceof TabulatedFunction function)) return false;
 
-        TabulatedFunction function = (TabulatedFunction) obj;
         if(this.pointsCount != function.getPointsCount())
             return false;
 
@@ -294,7 +293,8 @@ public class LinkedListTabulatedFunction implements TabulatedFunction{
     }
 
     @Override
-    protected Object clone() throws CloneNotSupportedException {
+    public Object clone() throws CloneNotSupportedException {
+        Object o = super.clone();
         FunctionPoint[] functionPoints = new FunctionPoint[pointsCount];
 
         FunctionNode functionNode = head;
