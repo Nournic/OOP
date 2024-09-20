@@ -1,9 +1,6 @@
 package ru.ssau.tk.nour.oop.functions;
 
 import java.io.Serializable;
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 public class FunctionPoint implements Serializable {
     private double x,y;
@@ -53,7 +50,6 @@ public class FunctionPoint implements Serializable {
             return false;
 
         return true;
-
     }
 
     @Override

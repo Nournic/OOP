@@ -192,4 +192,61 @@ public class ArrayTabulatedFunction implements TabulatedFunction {
         functionPoints[index_insert] = point;
         pointsCount++;
     }
+
+    @Override
+    public int hashCode() {
+        int hash=0;
+        for (int i = 0; i < pointsCount; i++)
+            hash+=Double.hashCode(functionPoints[i].getX()) + Double.hashCode(functionPoints[i].getY());
+
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof TabulatedFunction)) return false;
+
+        TabulatedFunction function = (TabulatedFunction) obj;
+        if(this.pointsCount != function.getPointsCount())
+            return false;
+
+        if(function instanceof ArrayTabulatedFunction){
+            for (int i = 0; i < function.getPointsCount(); i++) {
+                FunctionPoint functionPoint = ((ArrayTabulatedFunction) function).functionPoints[i];
+                if(functionPoint.getX() != this.functionPoints[i].getX()
+                        || functionPoint.getY() != this.functionPoints[i].getY())
+                    return false;
+            }
+        }
+        else {
+            for (int i = 0; i < function.getPointsCount(); i++) {
+                FunctionPoint functionPoint = function.getPoint(i);
+                if(functionPoint.getX() != this.functionPoints[i].getX()
+                        || functionPoint.getY() != this.functionPoints[i].getY())
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        ArrayTabulatedFunction arrayTabulatedFunction = new ArrayTabulatedFunction(functionPoints.clone());
+        return arrayTabulatedFunction;
+    }
+
+    @Override
+    public String toString() {
+        String format = "{";
+
+        for (int i = 0; i < pointsCount; i++) {
+            format += String.format("(%f; %f)",functionPoints[i].getX(), functionPoints[i].getY());
+            if(i < pointsCount - 1)
+                format += ", ";
+        }
+        format += "}";
+
+        return format;
+    }
 }
