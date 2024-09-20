@@ -1,6 +1,9 @@
 package ru.ssau.tk.nour.oop.functions;
 
 import java.io.Serializable;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class FunctionPoint implements Serializable {
     private double x,y;
@@ -34,5 +37,32 @@ public class FunctionPoint implements Serializable {
 
     public void setY(double y) {
         this.y = y;
+    }
+
+    @Override
+    public int hashCode() {
+        return Double.hashCode(x) + Double.hashCode(y);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof FunctionPoint)) return false;
+
+        FunctionPoint point = (FunctionPoint) obj;
+        if(point.getX() != this.x || point.getY() != this.y)
+            return false;
+
+        return true;
+
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return new FunctionPoint(this);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("(%f; %f)", x, y);
     }
 }
