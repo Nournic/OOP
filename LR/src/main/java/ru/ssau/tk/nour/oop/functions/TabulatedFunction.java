@@ -1,6 +1,8 @@
 package ru.ssau.tk.nour.oop.functions;
 
-public interface TabulatedFunction extends Function{
+import java.io.Serializable;
+
+public interface TabulatedFunction extends Function, Serializable {
     int getPointsCount();
 
     FunctionPoint getPoint(int index) throws FunctionPointIndexOutOfBoundsException;

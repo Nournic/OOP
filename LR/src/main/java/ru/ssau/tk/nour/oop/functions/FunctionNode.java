@@ -1,6 +1,8 @@
 package ru.ssau.tk.nour.oop.functions;
 
-public class FunctionNode {
+import java.io.Serializable;
+
+public class FunctionNode implements Serializable {
     private FunctionPoint data;
     private FunctionNode next;
     private FunctionNode prev;

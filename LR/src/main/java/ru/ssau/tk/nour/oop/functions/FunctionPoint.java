@@ -1,6 +1,8 @@
 package ru.ssau.tk.nour.oop.functions;
 
-public class FunctionPoint {
+import java.io.Serializable;
+
+public class FunctionPoint implements Serializable {
     private double x,y;
 
     public FunctionPoint(double x, double y) {

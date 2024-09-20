@@ -61,7 +61,7 @@ public class Tests {
     @Test
     void tabulateExp(){
         TabulatedFunction tabulatedFunction = TabulatedFunctions.tabulate(exp, 0, 10, 11);
-        File file = new File("./src/test/java/ru/ssau/tk/nour/oop/functions/task_8/Exp.txt");
+        File file = new File("./Exp.txt");
 
         if(!file.exists()) {
             try {
@@ -73,6 +73,7 @@ public class Tests {
         try {
             FileWriter writer = new FileWriter(file);
             TabulatedFunctions.writeTabulatedFunction(tabulatedFunction,writer);
+            writer.close();
         } catch (IOException e) {
             System.out.println("Error output.");
         }
@@ -81,6 +82,7 @@ public class Tests {
         try {
             FileReader fileReader = new FileReader(file);
             tabulatedFunction1 = TabulatedFunctions.readTabulatedFunction(fileReader);
+            fileReader.close();
         }
         catch(IOException e){
             System.out.println("Error input.");
@@ -95,7 +97,7 @@ public class Tests {
     @Test
     void tabulateLog(){
         TabulatedFunction tabulatedFunction = TabulatedFunctions.tabulate(new Log(Math.E), 0, 10, 11);
-        File file = new File("./src/test/java/ru/ssau/tk/nour/oop/functions/task_8/Log.txt");
+        File file = new File("./Log.txt");
 
         if(!file.exists()) {
             try {
@@ -107,6 +109,7 @@ public class Tests {
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(file);
             TabulatedFunctions.outputTabulatedFunction(tabulatedFunction, fileOutputStream);
+            fileOutputStream.close();
         } catch (IOException e) {
             System.out.println("Error output.");
         }
@@ -115,6 +118,7 @@ public class Tests {
         try {
             FileInputStream fileInputStream = new FileInputStream(file);
             tabulatedFunction1 = TabulatedFunctions.inputTabulatedFunction(fileInputStream);
+            fileInputStream.close();
         }
         catch(IOException e){
             System.out.println("Error input.");
