@@ -1,5 +1,9 @@
 package ru.ssau.tk.nour.oop.functions;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 public class LinkedListTabulatedFunction implements TabulatedFunction{
     private FunctionNode head;
     private FunctionNode last_search;
@@ -229,5 +233,92 @@ public class LinkedListTabulatedFunction implements TabulatedFunction{
 
         addNodeByIndex(index_insert).setData(point);
         pointsCount++;
+    }
+
+    @Override
+    public int hashCode() {
+        String input = this.toString();
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
+
+            byte[] messageDigest = md.digest(input.getBytes());
+
+            BigInteger no = new BigInteger(1, messageDigest);
+
+            String hashtext = no.toString(16);
+
+            while (hashtext.length() < 40) {
+                hashtext = "0" + hashtext;
+            }
+
+            return Integer.parseInt(hashtext);
+        }
+
+        // For specifying wrong message digest algorithms
+        catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof TabulatedFunction)) return false;
+
+        TabulatedFunction function = (TabulatedFunction) obj;
+        if(this.pointsCount != function.getPointsCount())
+            return false;
+
+        if(function instanceof ArrayTabulatedFunction){
+            FunctionNode thisNode = this.head;
+            for (int i = 0; i < function.getPointsCount(); i++) {
+                FunctionPoint functionPoint = function.getPoint(i);
+                thisNode = thisNode.getNext();
+                if(functionPoint.getX() != thisNode.getData().getX()
+                        || functionPoint.getY() != thisNode.getData().getY())
+                    return false;
+            }
+        }
+        else {
+            FunctionNode functionNode = ((LinkedListTabulatedFunction)function).head;
+            FunctionNode thisNode = head;
+            for (int i = 0; i < function.getPointsCount(); i++) {
+                functionNode = functionNode.getNext();
+                thisNode = thisNode.getNext();
+                if(functionNode.getData().getX() != thisNode.getData().getX()
+                        || functionNode.getData().getY() != thisNode.getData().getY())
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        FunctionPoint[] functionPoints = new FunctionPoint[pointsCount];
+
+        FunctionNode functionNode = head;
+        for (int i = 0; i < functionPoints.length; i++) {
+            functionNode = functionNode.getNext();
+            functionPoints[i] = new FunctionPoint(functionNode.getData());
+        }
+
+        return new LinkedListTabulatedFunction(functionPoints);
+    }
+
+    @Override
+    public String toString() {
+        String format = "{";
+
+        FunctionNode functionNode = head;
+        for (int i = 0; i < pointsCount; i++) {
+            functionNode = functionNode.getNext();
+            format += String.format("(%f; %f)", functionNode.getData().getX(), functionNode.getData().getY());
+            if(i < pointsCount - 1)
+                format += ", ";
+        }
+        format += "}";
+
+        return format;
     }
 }
