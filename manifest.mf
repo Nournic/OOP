@@ -1,3 +1,4 @@
 Manifest-Version: 1.0
 Created-By: Plohin
+Class-Path: bin/
 Main-Class: MyFirstClass
