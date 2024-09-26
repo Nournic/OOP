@@ -199,27 +199,11 @@ public class ArrayTabulatedFunction implements TabulatedFunction {
 
     @Override
     public int hashCode() {
-        String input = this.toString();
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-1");
+        int res = getPointsCount();
+        for (FunctionPoint point: functionPoints)
+            res ^= point.hashCode();
 
-            byte[] messageDigest = md.digest(input.getBytes());
-
-            BigInteger no = new BigInteger(1, messageDigest);
-
-            String hashtext = no.toString(16);
-
-            while (hashtext.length() < 40) {
-                hashtext = "0" + hashtext;
-            }
-
-            return Integer.parseInt(hashtext);
-        }
-
-        // For specifying wrong message digest algorithms
-        catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
+        return res;
     }
 
     @Override
@@ -252,8 +236,9 @@ public class ArrayTabulatedFunction implements TabulatedFunction {
 
     @Override
     public Object clone() throws CloneNotSupportedException {
-        Object o = super.clone();
-        return new ArrayTabulatedFunction(functionPoints.clone());
+        FunctionPoint[] functionPoint = new FunctionPoint[getPointsCount()];
+        System.arraycopy(functionPoints,0,functionPoint,0, getPointsCount());
+        return new ArrayTabulatedFunction(functionPoint);
     }
 
     @Override

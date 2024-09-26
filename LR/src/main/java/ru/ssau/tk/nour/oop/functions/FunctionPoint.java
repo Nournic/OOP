@@ -38,7 +38,16 @@ public class FunctionPoint implements Serializable {
 
     @Override
     public int hashCode() {
-        return Double.hashCode(x) + Double.hashCode(y);
+        long bitsX = Double.doubleToLongBits(x);
+        long bitsY = Double.doubleToLongBits(y);
+
+        int xLow = (int) bitsX;
+        int xHigh = (int) (bitsX >>> 32);
+
+        int yLow = (int) bitsY;
+        int yHigh = (int) (bitsY >>> 32);
+
+        return xLow ^ xHigh ^ yLow ^ yHigh;
     }
 
     @Override

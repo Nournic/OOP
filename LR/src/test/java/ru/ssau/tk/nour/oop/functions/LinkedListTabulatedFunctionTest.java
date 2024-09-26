@@ -280,4 +280,50 @@ class LinkedListTabulatedFunctionTest {
             Assertions.assertEquals(-1, 1);
         }
     }
+
+    @Test
+    void cloneTest(){
+        LinkedListTabulatedFunction linkedListTabulatedFunction1;
+        try {
+            linkedListTabulatedFunction1 = (LinkedListTabulatedFunction) linkedListTabulatedFunction.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+
+        for (int i = 0; i < linkedListTabulatedFunction.getPointsCount(); i++) {
+            Assertions.assertEquals(linkedListTabulatedFunction.getPointX(i), linkedListTabulatedFunction1.getPointX(i));
+            Assertions.assertEquals(linkedListTabulatedFunction.getPointY(i), linkedListTabulatedFunction1.getPointY(i));
+        }
+    }
+
+    @Test
+    void toStringTest(){
+        for (int i = 0; i < linkedListTabulatedFunction.getPointsCount(); i++)
+            System.out.println(linkedListTabulatedFunction.getPoint(i).toString());
+        System.out.println(linkedListTabulatedFunction.toString());
+    }
+
+    @Test
+    void equalsTest(){
+        double[] values = {1, 2, 4, 8, 16, 32, 64, 128, 256};
+        ArrayTabulatedFunction arrayTabulatedFunction = new ArrayTabulatedFunction(-5.0, 5.0, values);
+
+        Assertions.assertTrue(linkedListTabulatedFunction.equals(arrayTabulatedFunction));
+        Assertions.assertTrue(linkedListTabulatedFunction.equals(arrayTabulatedFunction));
+
+        arrayTabulatedFunction.setPointY(0,123123);
+        Assertions.assertFalse(linkedListTabulatedFunction.equals(arrayTabulatedFunction));
+    }
+
+    @Test
+    void hashCodeTest(){
+        double[] values = {1, 2, 4, 8, 16, 32, 64, 128, 256};
+        ArrayTabulatedFunction arrayTabulatedFunction = new ArrayTabulatedFunction(-5.0, 5.0, values);
+
+        Assertions.assertEquals(linkedListTabulatedFunction.hashCode(), arrayTabulatedFunction.hashCode());
+
+        arrayTabulatedFunction.setPointY(0, 3123);
+
+        Assertions.assertNotEquals(linkedListTabulatedFunction.hashCode(), arrayTabulatedFunction.hashCode());
+    }
 }

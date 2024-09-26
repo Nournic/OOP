@@ -278,4 +278,50 @@ class ArrayTabulatedFunctionTest {
         Assertions.assertThrowsExactly(InappropriateFunctionPointException.class,
                 () -> arrayTabulatedFunctionArray.addPoint(functionPoint));
     }
+
+    @Test
+    void cloneTest(){
+        ArrayTabulatedFunction arrayTabulatedFunction;
+        try {
+            arrayTabulatedFunction = (ArrayTabulatedFunction) arrayTabulatedFunctionArray.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+
+        for (int i = 0; i < arrayTabulatedFunctionArray.getPointsCount(); i++) {
+            Assertions.assertEquals(arrayTabulatedFunctionArray.getPointX(i), arrayTabulatedFunction.getPointX(i));
+            Assertions.assertEquals(arrayTabulatedFunctionArray.getPointY(i), arrayTabulatedFunction.getPointY(i));
+        }
+    }
+
+    @Test
+    void toStringTest(){
+        for (int i = 0; i < arrayTabulatedFunctionArray.getPointsCount(); i++)
+            System.out.println(arrayTabulatedFunctionArray.getPoint(i).toString());
+        System.out.println(arrayTabulatedFunctionArray.toString());
+    }
+
+    @Test
+    void equalsTest(){
+        double[] values = {1, 2, 4, 8, 16, 32, 64, 128, 256};
+        LinkedListTabulatedFunction linkedListTabulatedFunction = new LinkedListTabulatedFunction(-5.0, 5.0, values);
+
+        Assertions.assertTrue(arrayTabulatedFunctionArray.equals(linkedListTabulatedFunction));
+        Assertions.assertTrue(arrayTabulatedFunctionArray.equals(arrayTabulatedFunctionArray));
+
+        linkedListTabulatedFunction.setPointY(0,123123);
+        Assertions.assertFalse(arrayTabulatedFunctionArray.equals(linkedListTabulatedFunction));
+    }
+
+    @Test
+    void hashCodeTest(){
+        double[] values = {1, 2, 4, 8, 16, 32, 64, 128, 256};
+        LinkedListTabulatedFunction linkedListTabulatedFunction = new LinkedListTabulatedFunction(-5.0, 5.0, values);
+
+        Assertions.assertEquals(arrayTabulatedFunctionArray.hashCode(), linkedListTabulatedFunction.hashCode());
+
+        linkedListTabulatedFunction.setPointY(0, 3123);
+
+        Assertions.assertNotEquals(arrayTabulatedFunctionArray.hashCode(), linkedListTabulatedFunction.hashCode());
+    }
 }

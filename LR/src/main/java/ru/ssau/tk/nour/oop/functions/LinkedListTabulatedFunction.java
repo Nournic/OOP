@@ -237,27 +237,14 @@ public class LinkedListTabulatedFunction implements TabulatedFunction{
 
     @Override
     public int hashCode() {
-        String input = this.toString();
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-1");
-
-            byte[] messageDigest = md.digest(input.getBytes());
-
-            BigInteger no = new BigInteger(1, messageDigest);
-
-            String hashtext = no.toString(16);
-
-            while (hashtext.length() < 40) {
-                hashtext = "0" + hashtext;
-            }
-
-            return Integer.parseInt(hashtext);
+        int res = pointsCount;
+        FunctionNode node = head.getNext();
+        while(node!=head) {
+            res^=node.getData().hashCode();
+            node=node.getNext();
         }
 
-        // For specifying wrong message digest algorithms
-        catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
+        return res;
     }
 
     @Override
@@ -294,7 +281,6 @@ public class LinkedListTabulatedFunction implements TabulatedFunction{
 
     @Override
     public Object clone() throws CloneNotSupportedException {
-        Object o = super.clone();
         FunctionPoint[] functionPoints = new FunctionPoint[pointsCount];
 
         FunctionNode functionNode = head;
