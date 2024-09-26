@@ -22,4 +22,15 @@ public abstract class Functions {
         return new Composition(f1,f2);
     }
 
+    public static double integrate(Function function, double leftBorder, double rightBorder, double step) throws IllegalArgumentException{
+        if(function.getLeftDomainBorder() > leftBorder || function.getRightDomainBorder() < rightBorder)
+            throw new IllegalArgumentException();
+
+        double result=0;
+        int n = (int)((rightBorder-leftBorder)/step);
+        result += (function.getFunctionValue(leftBorder)+function.getFunctionValue(rightBorder))/2;
+        for(int i = 1; i < n; i++)
+            result += function.getFunctionValue(leftBorder + step * i);
+        return step*result;
+    }
 }
