@@ -11,6 +11,12 @@ public class LinkedListTabulatedFunction implements TabulatedFunction{
             throw new FunctionPointIndexOutOfBoundsException();
     }
 
+    private void checkX(int index, double x) throws InappropriateFunctionPointException {
+        if (index > 0 && x <= getNodeByIndex(index-1).getData().getX() ||
+                index < pointsCount - 1 && x >= getNodeByIndex(index+1).getData().getX())
+            throw new InappropriateFunctionPointException();
+    }
+
     private FunctionNode getNodeByIndex(int index) {
         FunctionNode current_node = head.getNext();
         int cur_index = 0;
@@ -166,14 +172,7 @@ public class LinkedListTabulatedFunction implements TabulatedFunction{
 
     public void setPoint(int index, FunctionPoint point) throws FunctionPointIndexOutOfBoundsException, InappropriateFunctionPointException {
         checkIndex(index);
-
-        // Точка за левой границей
-        if (point.getX() < getLeftDomainBorder())
-            throw new InappropriateFunctionPointException();
-
-        // Точка за правой границей
-        if (point.getX() > getRightDomainBorder())
-            throw new InappropriateFunctionPointException();
+        checkX(index, point.getX());
 
         getNodeByIndex(index).setData(point);
     }
@@ -185,13 +184,8 @@ public class LinkedListTabulatedFunction implements TabulatedFunction{
 
     public void setPointX(int index, double x) throws FunctionPointIndexOutOfBoundsException, InappropriateFunctionPointException {
         checkIndex(index);
-        // Точка за левой границей
-        if (x < getLeftDomainBorder())
-            throw new InappropriateFunctionPointException();
+        checkX(index, x);
 
-        // Точка за правой границей
-        if (x > getRightDomainBorder())
-            throw new InappropriateFunctionPointException();
         getNodeByIndex(index).getData().setX(x);
     }
 

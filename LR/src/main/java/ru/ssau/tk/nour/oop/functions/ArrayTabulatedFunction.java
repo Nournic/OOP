@@ -24,6 +24,12 @@ public class ArrayTabulatedFunction implements TabulatedFunction {
             throw new FunctionPointIndexOutOfBoundsException();
     }
 
+    private void checkX(int index, double x) throws InappropriateFunctionPointException {
+        if (index > 0 && x <= functionPoints[index - 1].getX() ||
+                index < pointsCount - 1 && x >= functionPoints[index + 1].getX())
+            throw new InappropriateFunctionPointException();
+    }
+
     public ArrayTabulatedFunction(double leftX, double rightX, int pointsCount) throws IllegalArgumentException{
         if (leftX >= rightX || pointsCount < 2)
             throw new IllegalArgumentException();
@@ -119,14 +125,7 @@ public class ArrayTabulatedFunction implements TabulatedFunction {
 
     public void setPoint(int index, FunctionPoint point) throws FunctionPointIndexOutOfBoundsException, InappropriateFunctionPointException {
         checkIndex(index);
-        // Точка за левой границей
-        if (point.getX() < getLeftDomainBorder())
-            throw new InappropriateFunctionPointException();
-
-        // Точка за правой границей
-        if (point.getX() > getRightDomainBorder())
-            throw new InappropriateFunctionPointException();
-
+        checkX(index, point.getX());
         functionPoints[index] = point;
     }
 
@@ -137,14 +136,7 @@ public class ArrayTabulatedFunction implements TabulatedFunction {
 
     public void setPointX(int index, double x) throws FunctionPointIndexOutOfBoundsException, InappropriateFunctionPointException {
         checkIndex(index);
-        // Точка за левой границей
-        if (x < getLeftDomainBorder())
-            throw new InappropriateFunctionPointException();
-
-        // Точка за правой границей
-        if (x > getRightDomainBorder())
-            throw new InappropriateFunctionPointException();
-
+        checkX(index, x);
         functionPoints[index].setX(x);
     }
 
