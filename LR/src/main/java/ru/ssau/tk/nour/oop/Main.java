@@ -2,6 +2,8 @@ package ru.ssau.tk.nour.oop;
 
 import ru.ssau.tk.nour.oop.functions.Functions;
 import ru.ssau.tk.nour.oop.functions.basic.Log;
+import ru.ssau.tk.nour.oop.functions.threads.SimpleGenerator;
+import ru.ssau.tk.nour.oop.functions.threads.SimpleIntegrator;
 import ru.ssau.tk.nour.oop.functions.threads.Task;
 
 
@@ -28,8 +30,19 @@ public class Main {
 
     }
 
+    private static void simpleThreads(){
+        Task task = new Task();
+        task.setCountTasks(100);
+
+        Thread simpleGenerator = new Thread(new SimpleGenerator(task), "SimpleGenerator");
+        Thread simpleIntegrator = new Thread(new SimpleIntegrator(task), "SimpleIntegrator");
+
+        simpleGenerator.start();
+        simpleIntegrator.start();
+    }
+
     public static void main(String[] args) {
-        nonThread();
+        simpleThreads();
     }
 
 
