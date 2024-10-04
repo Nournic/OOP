@@ -1,9 +1,7 @@
 package ru.ssau.tk.nour.oop;
 
-import ru.ssau.tk.nour.oop.functions.ArrayTabulatedFunction;
-import ru.ssau.tk.nour.oop.functions.FunctionPoint;
-import ru.ssau.tk.nour.oop.functions.Functions;
-import ru.ssau.tk.nour.oop.functions.LinkedListTabulatedFunction;
+import ru.ssau.tk.nour.oop.functions.*;
+import ru.ssau.tk.nour.oop.functions.basic.Cos;
 import ru.ssau.tk.nour.oop.functions.basic.Log;
 import ru.ssau.tk.nour.oop.functions.threads.*;
 
@@ -62,16 +60,19 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        double[] values = {1, 2, 4, 8, 16, 32, 64, 128, 256};
-        LinkedListTabulatedFunction linkedListTabulatedFunction = new LinkedListTabulatedFunction(0.0, 8.0, values);
-        ArrayTabulatedFunction arrayTabulatedFunction = new ArrayTabulatedFunction(0.0, 8.0, values);
+        Function f = new Cos();
+        TabulatedFunction tf;
+        tf = TabulatedFunctions.tabulate(f, 0, Math.PI, 11);
+        System.out.println(tf.getClass());
+        TabulatedFunctions.setTabulatedFunctionFactory(new
+                LinkedListTabulatedFunction.LinkedListTabulatedFunctionFactory());
+        tf = TabulatedFunctions.tabulate(f, 0, Math.PI, 11);
+        System.out.println(tf.getClass());
+        TabulatedFunctions.setTabulatedFunctionFactory(new
+                ArrayTabulatedFunction.ArrayTabulatedFunctionFactory());
+        tf = TabulatedFunctions.tabulate(f, 0, Math.PI, 11);
+        System.out.println(tf.getClass());
 
-        for (FunctionPoint point: arrayTabulatedFunction){
-            System.out.println(point.getY());
-        }
-        for (FunctionPoint point: linkedListTabulatedFunction){
-            System.out.println(point.getY());
-        }
     }
 
 

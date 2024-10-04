@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class TabulatedFunctions {
+    private static TabulatedFunctionFactory factory = new ArrayTabulatedFunction.ArrayTabulatedFunctionFactory();
+
     public static TabulatedFunction tabulate(Function function, double leftX, double rightX, int pointsCount) throws IllegalArgumentException{
         if(leftX<function.getLeftDomainBorder() || rightX>function.getRightDomainBorder())
             throw new IllegalArgumentException();
@@ -19,12 +21,23 @@ public abstract class TabulatedFunctions {
             current_step+=step;
         }
 
-        if(pointsCount<100)
-            tabulatedFunction = new LinkedListTabulatedFunction(functionPoints);
-        else
-            tabulatedFunction = new ArrayTabulatedFunction(functionPoints);
+        return createTabulatedFunction(functionPoints);
+    }
 
-        return tabulatedFunction;
+    public static void setTabulatedFunctionFactory(TabulatedFunctionFactory factory){
+        TabulatedFunctions.factory = factory;
+    }
+
+    public static TabulatedFunction createTabulatedFunction(double leftX, double rightX, int pointsCount) throws IllegalArgumentException {
+        return factory.createTabulatedFunction(leftX, rightX, pointsCount);
+    }
+
+    public static TabulatedFunction createTabulatedFunction(double leftX, double rightX, double[] values) throws IllegalArgumentException {
+        return factory.createTabulatedFunction(leftX, rightX, values);
+    }
+
+    public static TabulatedFunction createTabulatedFunction(FunctionPoint[] points) throws IllegalArgumentException {
+        return factory.createTabulatedFunction(points);
     }
 
     public static void outputTabulatedFunction(TabulatedFunction function, OutputStream out) throws IOException {
@@ -54,7 +67,7 @@ public abstract class TabulatedFunctions {
         for (int i = 0; i < list.size(); i++)
             functionPoints[i] = list.get(i);
 
-        return new ArrayTabulatedFunction(functionPoints);
+        return createTabulatedFunction(functionPoints);
     }
 
     public static void writeTabulatedFunction(TabulatedFunction function, Writer out) throws IOException{
@@ -98,6 +111,6 @@ public abstract class TabulatedFunctions {
         for (int i = 0; i < functionPoints.length; i++)
             functionPoints[i] = new FunctionPoint(num_list.get(j++),num_list.get(j++));
 
-        return new ArrayTabulatedFunction(functionPoints);
+        return createTabulatedFunction(functionPoints);
     }
 }

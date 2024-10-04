@@ -1,0 +1,9 @@
+package ru.ssau.tk.nour.oop.functions;
+
+public interface TabulatedFunctionFactory {
+    TabulatedFunction createTabulatedFunction(double leftX, double rightX, int pointsCount) throws IllegalArgumentException;
+    TabulatedFunction createTabulatedFunction(double leftX, double rightX, double[] values) throws IllegalArgumentException;
+    TabulatedFunction createTabulatedFunction(FunctionPoint[] points) throws IllegalArgumentException;
+
+
+}
