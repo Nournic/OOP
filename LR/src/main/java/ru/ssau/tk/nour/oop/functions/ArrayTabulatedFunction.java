@@ -1,8 +1,7 @@
 package ru.ssau.tk.nour.oop.functions;
 
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class ArrayTabulatedFunction implements TabulatedFunction {
     private FunctionPoint[] functionPoints;
@@ -253,5 +252,30 @@ public class ArrayTabulatedFunction implements TabulatedFunction {
         format += "}";
 
         return format;
+    }
+
+    @Override
+    public Iterator<FunctionPoint> iterator() {
+        return new Iterator<>() {
+            private int index=0;
+
+            @Override
+            public boolean hasNext() {
+                return index < pointsCount;
+            }
+
+            @Override
+            public void remove() throws UnsupportedOperationException{
+                throw new UnsupportedOperationException();
+            }
+
+            @Override
+            public FunctionPoint next() {
+                if(!this.hasNext())
+                    throw new NoSuchElementException();
+
+                return functionPoints[index++];
+            }
+        };
     }
 }

@@ -1,8 +1,7 @@
 package ru.ssau.tk.nour.oop.functions;
 
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class LinkedListTabulatedFunction implements TabulatedFunction{
     private FunctionNode head;
@@ -306,5 +305,32 @@ public class LinkedListTabulatedFunction implements TabulatedFunction{
         format += "}";
 
         return format;
+    }
+
+    @Override
+    public Iterator<FunctionPoint> iterator() {
+        return new Iterator<>() {
+            private FunctionNode node = head;
+
+            @Override
+            public boolean hasNext() {
+                return node.getNext() != head;
+            }
+
+            @Override
+            public void remove() throws UnsupportedOperationException{
+                throw new UnsupportedOperationException();
+            }
+
+            @Override
+            public FunctionPoint next() throws NoSuchElementException {
+                if(!this.hasNext())
+                    throw new NoSuchElementException();
+
+                node=node.getNext();
+
+                return node.getData();
+            }
+        };
     }
 }
