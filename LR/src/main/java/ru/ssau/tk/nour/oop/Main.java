@@ -2,9 +2,9 @@ package ru.ssau.tk.nour.oop;
 
 import ru.ssau.tk.nour.oop.functions.Functions;
 import ru.ssau.tk.nour.oop.functions.basic.Log;
-import ru.ssau.tk.nour.oop.functions.threads.SimpleGenerator;
-import ru.ssau.tk.nour.oop.functions.threads.SimpleIntegrator;
-import ru.ssau.tk.nour.oop.functions.threads.Task;
+import ru.ssau.tk.nour.oop.functions.threads.*;
+
+import java.util.concurrent.Semaphore;
 
 
 public class Main {
@@ -41,8 +41,29 @@ public class Main {
         simpleIntegrator.start();
     }
 
+    private static void complicatedThreads() throws InterruptedException {
+        Task task = new Task();
+        task.setCountTasks(100);
+        Semaphore semaphore = new Semaphore(1, true);
+
+        Generator generator = new Generator(task, semaphore);
+        Integrator integrator = new Integrator(task, semaphore);
+
+        generator.start();
+        integrator.start();
+
+        Thread.sleep(50);
+
+        generator.interrupt();
+        integrator.interrupt();
+    }
+
     public static void main(String[] args) {
-        simpleThreads();
+        try {
+            complicatedThreads();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
