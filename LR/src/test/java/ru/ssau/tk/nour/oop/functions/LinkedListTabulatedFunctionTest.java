@@ -262,7 +262,7 @@ class LinkedListTabulatedFunctionTest {
         FunctionPoint functionPoint = new FunctionPoint(-5.01, 0);
 
         Assertions.assertThrowsExactly(InappropriateFunctionPointException.class,
-                () -> linkedListTabulatedFunction.setPointX(0, functionPoint.getX()));
+                () -> linkedListTabulatedFunction.setPointX(1, functionPoint.getX()));
 
         functionPoint.setX(5.01);
 

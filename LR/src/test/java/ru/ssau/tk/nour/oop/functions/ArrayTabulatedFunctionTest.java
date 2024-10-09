@@ -235,7 +235,7 @@ class ArrayTabulatedFunctionTest {
         FunctionPoint functionPoint = new FunctionPoint(-5.01, 0);
 
         Assertions.assertThrowsExactly(InappropriateFunctionPointException.class,
-                () -> arrayTabulatedFunctionArray.setPointX(0, functionPoint.getX()));
+                () -> arrayTabulatedFunctionArray.setPointX(1, functionPoint.getX()));
 
         functionPoint.setX(5.01);
 
