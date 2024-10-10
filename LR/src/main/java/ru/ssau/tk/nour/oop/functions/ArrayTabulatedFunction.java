@@ -230,8 +230,10 @@ public class ArrayTabulatedFunction implements TabulatedFunction {
 
     @Override
     public Object clone() throws CloneNotSupportedException {
-        FunctionPoint[] functionPoint = new FunctionPoint[getPointsCount()];
-        System.arraycopy(functionPoints,0,functionPoint,0, getPointsCount());
+        FunctionPoint[] functionPoint = new FunctionPoint[pointsCount];
+        for (int i = 0; i < pointsCount; i++)
+            functionPoint[i] = new FunctionPoint(functionPoints[i]);
+
         return new ArrayTabulatedFunction(functionPoint);
     }
 

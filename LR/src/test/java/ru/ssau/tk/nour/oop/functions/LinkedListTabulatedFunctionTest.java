@@ -293,6 +293,7 @@ class LinkedListTabulatedFunctionTest {
         for (int i = 0; i < linkedListTabulatedFunction.getPointsCount(); i++) {
             Assertions.assertEquals(linkedListTabulatedFunction.getPointX(i), linkedListTabulatedFunction1.getPointX(i));
             Assertions.assertEquals(linkedListTabulatedFunction.getPointY(i), linkedListTabulatedFunction1.getPointY(i));
+            Assertions.assertNotSame(linkedListTabulatedFunction.getPoint(i), linkedListTabulatedFunction1.getPoint(i));
         }
     }
 

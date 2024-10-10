@@ -212,7 +212,7 @@ class ArrayTabulatedFunctionTest {
         FunctionPoint functionPoint = new FunctionPoint(-5.01, 0);
 
         Assertions.assertThrowsExactly(InappropriateFunctionPointException.class,
-                () -> arrayTabulatedFunctionArray.setPoint(0, functionPoint));
+                () -> arrayTabulatedFunctionArray.setPoint(1, functionPoint));
 
         functionPoint.setX(5.01);
 
@@ -291,6 +291,7 @@ class ArrayTabulatedFunctionTest {
         for (int i = 0; i < arrayTabulatedFunctionArray.getPointsCount(); i++) {
             Assertions.assertEquals(arrayTabulatedFunctionArray.getPointX(i), arrayTabulatedFunction.getPointX(i));
             Assertions.assertEquals(arrayTabulatedFunctionArray.getPointY(i), arrayTabulatedFunction.getPointY(i));
+            Assertions.assertNotSame(arrayTabulatedFunctionArray.getPoint(i), arrayTabulatedFunction.getPoint(i));
         }
     }
 
