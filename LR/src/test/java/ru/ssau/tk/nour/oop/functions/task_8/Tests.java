@@ -58,6 +58,8 @@ public class Tests {
         }
     }
 
+
+
     @Test
     void tabulateExp(){
         TabulatedFunction tabulatedFunction = TabulatedFunctions.tabulate(exp, 0, 10, 11);
@@ -78,7 +80,7 @@ public class Tests {
             System.out.println("Error output.");
         }
 
-        TabulatedFunction tabulatedFunction1 = new ArrayTabulatedFunction(0,5,10);
+        TabulatedFunction tabulatedFunction1 = new ArrayTabulatedFunction(0,10,11);
         try {
             FileReader fileReader = new FileReader(file);
             tabulatedFunction1 = TabulatedFunctions.readTabulatedFunction(fileReader);
@@ -114,7 +116,7 @@ public class Tests {
             System.out.println("Error output.");
         }
 
-        TabulatedFunction tabulatedFunction1 = new ArrayTabulatedFunction(0,5,10);
+        TabulatedFunction tabulatedFunction1 = new ArrayTabulatedFunction(0,10,11);
         try {
             FileInputStream fileInputStream = new FileInputStream(file);
             tabulatedFunction1 = TabulatedFunctions.inputTabulatedFunction(fileInputStream);

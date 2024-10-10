@@ -18,6 +18,7 @@ public class Log implements Function {
     }
 
     public double getFunctionValue(double x) {
+        if(x==1) return 0;
         return Math.log(x) / Math.log(base);
     }
 }

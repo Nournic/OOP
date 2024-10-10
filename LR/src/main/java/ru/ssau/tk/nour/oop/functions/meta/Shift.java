@@ -26,6 +26,6 @@ public class Shift implements Function {
     }
 
     public double getFunctionValue(double x) {
-        return function.getFunctionValue(x - shift_X) + shift_Y;
+        return function.getFunctionValue(x + shift_X) + shift_Y;
     }
 }

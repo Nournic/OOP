@@ -145,6 +145,14 @@ public class LinkedListTabulatedFunction implements TabulatedFunction{
     public double getFunctionValue(double x) {
         double answer = Double.NaN;
 
+        FunctionNode node = head.getNext();
+        for (int i = 0; i < pointsCount; i++) {
+            if(node.getData().getX()==x)
+                return node.getData().getY();
+
+            node=node.getNext();
+        }
+
         if (x >= getLeftDomainBorder() && x <= getRightDomainBorder()) {
             FunctionPoint next_point = getPoint(1);
             FunctionPoint prev_point = getPoint(0);

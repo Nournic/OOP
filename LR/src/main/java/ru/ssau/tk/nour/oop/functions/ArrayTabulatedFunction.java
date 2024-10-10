@@ -98,6 +98,10 @@ public class ArrayTabulatedFunction implements TabulatedFunction {
     public double getFunctionValue(double x) {
         double answer = Double.NaN;
 
+        for (int i = 0; i < pointsCount; i++)
+            if(functionPoints[i].getX()==x)
+                return functionPoints[i].getY();
+
         if (x >= getLeftDomainBorder() && x <= getRightDomainBorder()) {
             FunctionPoint next_point = functionPoints[1];
             FunctionPoint prev_point = functionPoints[0];
