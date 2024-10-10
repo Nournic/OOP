@@ -5,6 +5,7 @@ import ru.ssau.tk.nour.oop.functions.Function;
 public class Shift implements Function {
     private Function function;
     private double shift_Y;
+    private double shift_X;
     private double left_border;
     private double right_border;
 
@@ -13,6 +14,7 @@ public class Shift implements Function {
         this.left_border = function.getLeftDomainBorder()+shift_X;
         this.right_border = function.getRightDomainBorder()+shift_X;
         this.shift_Y = shift_Y;
+        this.shift_X = shift_X;
     }
 
     public double getLeftDomainBorder() {
@@ -24,6 +26,6 @@ public class Shift implements Function {
     }
 
     public double getFunctionValue(double x) {
-        return function.getFunctionValue(x)+shift_Y;
+        return function.getFunctionValue(x - shift_X) + shift_Y;
     }
 }
